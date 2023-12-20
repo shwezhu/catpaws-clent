@@ -1,3 +1,27 @@
+import fs from "fs";
+import multer from "multer";
+import path from "node:path";
+
+function getMulter(req, res, next) {
+    const media_dir = './uploads';
+
+    if (!fs.existsSync(media_dir)){
+        fs.mkdirSync(media_dir);
+    }
+
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+            cb(null, media_dir);
+        },
+        filename: function(req, file, cb) {
+            const uniqueSuffix = file.fieldname + '-' + Date.now();
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    });
+
+    return multer({ storage: storage });
+}
+
 function validateCredentials(req, res, next) {
     // object destructuring.
     const { username, password } = req.body;
@@ -8,5 +32,5 @@ function validateCredentials(req, res, next) {
     next();
 }
 
-export { validateCredentials };
+export { validateCredentials, getMulter };
 

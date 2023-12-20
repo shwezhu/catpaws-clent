@@ -51,4 +51,8 @@ function login(req, res) {
         )
 }
 
-export {register, login};
+function logout(req, res) {
+    res.status(200).send("logout: success");
+}
+
+export {register, login, logout};
