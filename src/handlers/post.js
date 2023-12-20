@@ -1,11 +1,20 @@
-// todo: check if user is logged in
-function createPost(req, res) {
-    const file = req.file;
+import {createPost} from "../db/functions.js"
 
-    console.log(req.files);
-    console.log('文本:', req.body.text);
-
-    res.send('帖子已接收');
+// todo: check if user is logged in, user id, etc.
+function handleCreatePost(req, res) {
+    const text = req.body.text;
+    const filePaths = req.files.map((file) => file.path);
+    createPost("11111", text, filePaths)
+        .then(
+            (doc) => {
+                res.status(201).send('post created successfully.');
+            }
+        )
+        .catch(
+            (err) => {
+                res.status(500).send(`internal error:${err}`);
+            }
+        )
     //console.log(`Creating new post with title: ${title} and body: ${body}`);
 }
 
@@ -13,4 +22,4 @@ function getPosts(req, res) {
 
 }
 
-export {createPost, getPosts};
+export {handleCreatePost, getPosts};

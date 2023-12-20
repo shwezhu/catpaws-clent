@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from "node:path";
 import {register, login, logout} from "./handlers/auth.js";
 import {getMulter, validateCredentials} from "./middleware/functions.js";
-import {createPost, getPosts} from "./handlers/post.js";
+import {handleCreatePost, getPosts} from "./handlers/post.js";
 
 const upload = getMulter();
 const app = express();
@@ -25,7 +25,7 @@ async function main() {
     app.post('/auth/logout', logout);
 
     // Post Routes.
-    app.post('/posts', upload.array('file', 6), createPost);
+    app.post('/posts', upload.array('file', 6), handleCreatePost);
     app.get('/posts', getPosts);
 
     app.listen(3000, () => {
