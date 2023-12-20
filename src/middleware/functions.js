@@ -2,6 +2,19 @@ import fs from "fs";
 import multer from "multer";
 import path from "node:path";
 
+function setMiddlewares(app) {
+    // Parse request body into req.body, if request has Content-Type: application/json.
+    app.use(express.json());
+    // Parse request body into req.body, if request has Content-Type: application/x-www-form-urlencoded.
+    app.use(express.urlencoded({extended: true}));
+    // Enable sessions.
+    app.use(session({
+        secret: 'your_secret_key',
+        resave: true,
+        saveUninitialized: true
+    }));
+}
+
 function getMulter(req, res, next) {
     const media_dir = './uploads';
 
@@ -32,5 +45,13 @@ function validateCredentials(req, res, next) {
     next();
 }
 
-export { validateCredentials, getMulter };
+function isAuthenticated(req, res, next) {
+    if (req.session.isAuthenticated) {
+        return next();
+    }
+
+    res.redirect('/auth/login');
+}
+
+export { validateCredentials, getMulter, isAuthenticated, setMiddlewares };
 

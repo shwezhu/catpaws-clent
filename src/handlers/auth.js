@@ -40,6 +40,7 @@ function login(req, res) {
                     return;
                 }
 
+                req.session.isAuthenticated = true;
                 res.status(200).send("login: success");
             }
         )
