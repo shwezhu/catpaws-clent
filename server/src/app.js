@@ -19,7 +19,7 @@ async function main() {
     setMiddlewares(app);
 
     app.get('/', isAuthenticated, (req, res) => {
-        res.sendFile('index.html', { root: path.join(__dirname, 'frontend') });
+        res.sendFile('index.html', { root: path.join(__dirname, 'client') });
     });
 
     // Auth Routes.
@@ -34,8 +34,8 @@ async function main() {
     app.post('/posts', isAuthenticated ,upload.array('file', 6), handleCreatePost);
     app.get('/posts', getPosts);
 
-    app.listen(3000, () => {
-        console.log('Server listening on port 3000');
+    app.listen(8080, () => {
+        console.log('Server listening on port 8080');
     });
 }
 
