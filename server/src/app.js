@@ -19,14 +19,16 @@ async function main() {
     setMiddlewares(app);
 
     app.get('/', isAuthenticated, (req, res) => {
-        res.sendFile('index.html', { root: path.join(__dirname, 'client') });
+        console.log(req.session);
+        res.status(500).json({message: "hello world"});
     });
 
     // Auth Routes.
     app.post('/auth/register', validateCredentials, register);
     app.post('/auth/login', validateCredentials, login);
-    app.get('/auth/login', (req, res) => {
-        res.send("login page");
+    app.get('/auth/login', isAuthenticated, (req, res) => {
+        console.log(req.session);
+        res.status(200).json({message: "login page"});
     });
     app.post('/auth/logout', logout);
 
@@ -34,8 +36,8 @@ async function main() {
     app.post('/posts', isAuthenticated ,upload.array('file', 6), handleCreatePost);
     app.get('/posts', getPosts);
 
-    app.listen(8080, () => {
-        console.log('Server listening on port 8080');
+    app.listen(6666, () => {
+        console.log('Server listening on port 6666');
     });
 }
 

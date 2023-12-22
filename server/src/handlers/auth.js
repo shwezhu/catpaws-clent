@@ -36,18 +36,18 @@ function login(req, res) {
         .then(
             (doc) => {
                 if (!doc || doc.password !== password) {
-                    res.status(400).send("login: credentials invalid");
+                    res.status(400).json({message: "error: login: credentials invalid"});
                     return;
                 }
 
                 req.session.isAuthenticated = true;
-                res.status(200).send("login: success");
+                res.status(200).json({message: "login: success"});
             }
         )
         .catch(
             (err) => {
                 console.error('login:', err);
-                res.status(500).send("login: internal error");
+                res.status(500).json({message: "error: login: internal error"});
             }
         )
 }

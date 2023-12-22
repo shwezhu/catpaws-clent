@@ -1,3 +1,9 @@
-export default function Square() {
-  return <button className="square">X</button>;
+import Login from "./Login";
+
+export default function App() {
+  return (
+      <>
+        <Login />
+      </>
+  )
 }
