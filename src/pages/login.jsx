@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import {useNavigate} from "react-router-dom";
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -16,19 +19,7 @@ function Login() {
             .then((res) => {
                 if (res.status === 200) {
                     console.log('Login successful');
-                    fetch('/auth/login', {
-                        method: 'GET',
-                        // credentials: 'include',
-                    }).then((res) => {
-                        if (res.status === 200) {
-                            console.log('Authenticated');
-                            res.json().then((data) => {
-                                console.log(data);
-                            });
-                        } else {
-                            console.log('Not authenticated');
-                        }
-                    });
+                    navigate('/');
                 } else {
                     res.json().then((data) => {
                         console.error('Login failed:', data.message);
