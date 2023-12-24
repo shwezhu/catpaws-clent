@@ -7,28 +7,30 @@ function Login() {
 
     const navigate = useNavigate();
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        fetch('/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({username: username, password: password}),
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    console.log('Login successful');
-                    navigate('/');
-                } else {
-                    res.json().then((data) => {
-                        console.error('Login failed:', data.message);
-                    });
-                }
-            })
-            .catch((err) => {
-                console.error('Login failed:', err);
+
+        try {
+            const res = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
             });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                /** @namespace data.userID */
+                localStorage.setItem('userID', data.userID);
+                navigate('/');
+            } else {
+                console.error('login:', data.message);
+            }
+        } catch (error) {
+            console.error('login:', error.message);
+        }
     }
 
     function handleUsernameChange(event) {

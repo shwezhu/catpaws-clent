@@ -1,35 +1,62 @@
-import {useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate} from "react-router-dom";
 
-function Home() {
+export default function Home(props) {
     const navigate = useNavigate();
-   // const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);
 
-    useEffect(() => {
-        fetch('/posts', {
+    useEffect(fetchPosts, [navigate, props.userID]);
+    if (!posts || posts.length === 0) {
+        return (
+            <h1>
+                No posts found.
+            </h1>
+        );
+    }
+
+    return (
+        <>
+            {
+                posts.map(post => (
+                    /** @namespace post._id **/
+                    /** @namespace post.likes **/
+                    <div key={post._id} className="post">
+                        <p>{post.text}</p>
+                        {post.images.map((image, index) => (
+                            <img key={index} src={image} alt={`Post ${post._id}`} />
+                        ))}
+                        <div>
+                            Likes: {post.likes?.length}
+                            Comments: {post.comments.length}
+                        </div>
+                    </div>
+            ))}
+        </>
+    );
+
+    function fetchPosts() {
+        if (props.userID == null) {
+            return;
+        }
+
+        fetch(`/posts/${props.userID}/`, {
             method: 'GET',
             credentials: 'include',
         })
             .then((res) => {
                 if (res.status === 401) {
-                    navigate('/login'); // Redirect to login page
-                    return;
+                    navigate('/login');
                 }
                 return res.json();
             })
             .then((data) => {
-                //setPosts(data.items);
-                console.log(data);
+                setPosts(data);
+                console.log('data:', data);
             })
-            .catch((err) => console.log(err));
-    }, [navigate]);
-
-    return (
-        <h1>
-            hello world
-        </h1>
-    );
-
+            .catch((err) => {
+                console.error('fetch post:', err);
+            });
+    }
     //
     // const [file, setFile] = useState(null);
     // const [text, setText] = useState('');
@@ -85,5 +112,3 @@ function Home() {
     //     </form>
     // );
 }
-
-export default Home;
