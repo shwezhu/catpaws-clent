@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import NewPost from "./new-post.jsx";
 
 export default function Home(props) {
     const navigate = useNavigate();
@@ -8,14 +9,18 @@ export default function Home(props) {
     useEffect(fetchPosts, [navigate, props.userID]);
     if (!posts || posts.length === 0) {
         return (
-            <h1>
-                No posts found.
-            </h1>
+            <>
+                <NewPost userID={props.userID}/>
+                <h1>
+                    No posts found.
+                </h1>
+            </>
         );
     }
 
     return (
         <>
+        <NewPost userID={props.userID} />
             {
                 posts.map(post => (
                     /** @namespace post._id **/
@@ -30,7 +35,8 @@ export default function Home(props) {
                             Comments: {post.comments.length}
                         </div>
                     </div>
-            ))}
+                ))
+            }
         </>
     );
 
@@ -57,58 +63,4 @@ export default function Home(props) {
                 console.error('fetch post:', err);
             });
     }
-    //
-    // const [file, setFile] = useState(null);
-    // const [text, setText] = useState('');
-    //
-    // const handleFileChange = (event) => {
-    //     setFile(event.target.files);
-    // };
-    //
-    // // Function to handle text change
-    // const handleTextChange = (event) => {
-    //     setText(event.target.value);
-    // };
-    //
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //
-    //     const formData = new FormData();
-    //     if (file) {
-    //         for (let i = 0; i < file.length; i++) {
-    //             formData.append('file', file[i]); // Append each file to formData
-    //         }
-    //     }
-    //     formData.append('text', text); // Append text data to formData
-    //
-    //     const response = await fetch('/posts', {
-    //         method: 'POST',
-    //         body: formData,
-    //     });
-    //
-    //     const result = await response.json();
-    //     console.log(result);
-    // };
-    //
-    // return (
-    //     <form onSubmit={handleSubmit} encType="multipart/form-data">
-    //         Select files:
-    //         <input
-    //             type="file"
-    //             id="file"
-    //             name="file"
-    //             multiple
-    //             onChange={handleFileChange}
-    //         /><br /><br />
-    //         Enter text:
-    //         <input
-    //             type="text"
-    //             id="text"
-    //             name="text"
-    //             value={text}
-    //             onChange={handleTextChange}
-    //         /><br /><br />
-    //         <input type="submit" value="Submit" />
-    //     </form>
-    // );
 }
