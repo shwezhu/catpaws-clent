@@ -7,36 +7,29 @@ export default function Home(props) {
     const [posts, setPosts] = useState([]);
 
     useEffect(fetchPosts, [navigate, props.userID]);
-    if (!posts || posts.length === 0) {
-        return (
-            <>
-                <NewPost userID={props.userID}/>
-                <h1>
-                    No posts found.
-                </h1>
-            </>
-        );
-    }
 
+    const isEmpty = (!posts || posts.length === 0);
+    const emptyPost = <h1>No posts found.</h1>
+    let postList = posts.map(post => (
+        /** @namespace post._id **/
+        /** @namespace post.likes **/
+        <div key={post._id} className="post">
+            <p>{post.text}</p>
+            {post.images.map((image, index) => (
+                <img key={index} src={image} alt={`Post ${post._id}`}/>
+            ))}
+            <div>
+                Likes: {post.likes?.length}
+                Comments: {post.comments.length}
+            </div>
+        </div>
+    ));
+
+    postList = isEmpty ? emptyPost : postList;
     return (
         <>
-        <NewPost userID={props.userID} />
-            {
-                posts.map(post => (
-                    /** @namespace post._id **/
-                    /** @namespace post.likes **/
-                    <div key={post._id} className="post">
-                        <p>{post.text}</p>
-                        {post.images.map((image, index) => (
-                            <img key={index} src={image} alt={`Post ${post._id}`} />
-                        ))}
-                        <div>
-                            Likes: {post.likes?.length}
-                            Comments: {post.comments.length}
-                        </div>
-                    </div>
-                ))
-            }
+            <NewPost userID={props.userID}/>
+            {postList}
         </>
     );
 
