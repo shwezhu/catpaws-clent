@@ -8,6 +8,8 @@ export default defineConfig({
         proxy: {
             '/posts': 'http://localhost:6666',
             '/auth/login': 'http://localhost:6666',
+            '/auth/register': 'http://localhost:6666',
+            '/auth/logout': 'http://localhost:6666',
         },
     },
 })

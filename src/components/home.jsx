@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import NewPost from "./new-post.jsx";
+import Logout from "./logout.jsx";
 
 export default function Home(props) {
     const navigate = useNavigate();
@@ -14,7 +15,6 @@ export default function Home(props) {
         /** @namespace post._id **/
         /** @namespace post.likes **/
         <div key={post._id} className="post">
-            <p>{post.text}</p>
             {post.images.map((image, index) => (
                 <img key={index} src={image} alt={`Post ${post._id}`}/>
             ))}
@@ -29,6 +29,7 @@ export default function Home(props) {
     return (
         <>
             <NewPost userID={props.userID}/>
+            <Logout />
             {postList}
         </>
     );

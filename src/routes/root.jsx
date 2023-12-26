@@ -1,5 +1,5 @@
 import {Link, useNavigate} from "react-router-dom";
-import Home from "../pages/home";
+import Home from "../components/home";
 import {useEffect} from "react";
 
 export default function Root() {
