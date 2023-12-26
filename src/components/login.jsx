@@ -22,14 +22,14 @@ function Login() {
             const data = await res.json();
 
             if (res.ok) {
-                /** @namespace data.userID */
-                localStorage.setItem('userID', data.userID);
+                /** @namespace data.userId */
+                localStorage.setItem('userId', data.userId);
                 navigate('/');
             } else {
-                console.error('login:', data.message);
+                console.error('login: ', data.message);
             }
-        } catch (error) {
-            console.error('login:', error.message);
+        } catch (err) {
+            console.error('login: ', err);
         }
     }
 

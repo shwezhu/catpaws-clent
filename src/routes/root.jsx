@@ -4,13 +4,13 @@ import {useEffect} from "react";
 
 export default function Root() {
     const navigate = useNavigate();
-    const userID = localStorage.getItem('userID');
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
-        if (userID == null) {
+        if (userId == null) {
             navigate('/login');
         }
-    }, [navigate, userID]);
+    }, [navigate, userId]);
 
     return (
         <>
@@ -20,7 +20,7 @@ export default function Root() {
                 </h2>
             </div>
             <div id = "home-content">
-                <Home userID={userID} />
+                <Home userId={userId} />
             </div>
         </>
     );

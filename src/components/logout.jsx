@@ -10,7 +10,7 @@ export default function Logout() {
         })
             .then((res) => {
                 if (res.status === 200) {
-                    localStorage.removeItem('userID');
+                    localStorage.removeItem('userId');
                     navigate('/login');
                 } else {
                     console.error('logout failed:', res.status)

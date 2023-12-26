@@ -7,54 +7,61 @@ export default function Home(props) {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
 
-    useEffect(fetchPosts, [navigate, props.userID]);
+    useEffect(()=>{
+        async function fetchPosts() {
+            // '==' is used to check for null or undefined.
+            if (props.userId == null) {
+                return;
+            }
 
+            try {
+                const res = await fetch(`/posts/${props.userId}/`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    setPosts(data);
+                    console.log('data:', data);
+                } else if (res.status === 401) {
+                    navigate('/login');
+                } else {
+                    console.error('fetch post: ', res.message);
+                }
+            } catch (err) {
+                console.error('fetch post: ', err);
+            }
+        }
+
+        fetchPosts().then();
+    }, [navigate, props.userId]);
+
+    let postList;
     const isEmpty = (!posts || posts.length === 0);
-    const emptyPost = <h1>No posts found.</h1>
-    let postList = posts.map(post => (
-        /** @namespace post._id **/
-        /** @namespace post.likes **/
-        <div key={post._id} className="post">
-            {post.images.map((image, index) => (
-                <img key={index} src={image} alt={`Post ${post._id}`}/>
-            ))}
-            <div>
-                Likes: {post.likes?.length}
-                Comments: {post.comments.length}
+    if (isEmpty) {
+        postList = <h1>No posts found.</h1>
+    } else {
+        postList = posts.map(post => (
+            /** @namespace post._id **/
+            <div key={post._id} className="post">
+                <p>{post.text}</p>
+                {post.images.map((image, index) => (
+                    <img key={index} src={image} alt={`Post ${post._id}`}/>
+                ))}
+                <div>
+                    Likes: {post.likes?.length}
+                    Comments: {post.comments.length}
+                </div>
             </div>
-        </div>
-    ));
+        ));
+    }
 
-    postList = isEmpty ? emptyPost : postList;
     return (
         <>
-            <NewPost userID={props.userID}/>
+            <NewPost userId={props.userId}/>
             <Logout />
             {postList}
         </>
     );
-
-    function fetchPosts() {
-        if (props.userID == null) {
-            return;
-        }
-
-        fetch(`/posts/${props.userID}/`, {
-            method: 'GET',
-            credentials: 'include',
-        })
-            .then((res) => {
-                if (res.status === 401) {
-                    navigate('/login');
-                }
-                return res.json();
-            })
-            .then((data) => {
-                setPosts(data);
-                console.log('data:', data);
-            })
-            .catch((err) => {
-                console.error('fetch post:', err);
-            });
-    }
 }

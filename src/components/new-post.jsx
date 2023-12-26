@@ -26,23 +26,23 @@ export default function NewPost(props) {
         formData.append('text', text);
 
         try {
-            const response = await fetch(`/posts/${props.userID}/new`, {
+            const response = await fetch(`/posts/${props.userId}/new`, {
                 method: 'POST',
                 body: formData,
             });
 
-            const result = await response.json();
+            const data = await response.json();
 
             if (response.status === 401) {
                 navigate('/login');
             } else if (response.status !== 201) {
-                console.error('upload:', result.message);
+                console.error('upload: ', data.message);
                 return;
             }
 
-            console.log(result.message);
+            console.log(data.message);
         } catch (err) {
-            console.error('upload:', err);
+            console.error('upload: ', err);
         }
     };
 
