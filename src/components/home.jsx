@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import NewPost from "./new-post.jsx";
 import Logout from "./logout.jsx";
+import PostCard from "./post.jsx";
 
 export default function Home(props) {
     const navigate = useNavigate();
@@ -43,17 +44,9 @@ export default function Home(props) {
         postList = <h1>No posts found.</h1>
     } else {
         postList = posts.map(post => (
+            /** @namespace post.author.fullname **/
             /** @namespace post._id **/
-            <div key={post._id} className="post">
-                <p>{post.text}</p>
-                {post.images.map((image, index) => (
-                    <img key={index} src={image} alt={`Post ${post._id}`}/>
-                ))}
-                <div>
-                    Likes: {post.likes?.length}
-                    Comments: {post.comments.length}
-                </div>
-            </div>
+            <PostCard post={post} key={post._id}/>
         ));
     }
 
