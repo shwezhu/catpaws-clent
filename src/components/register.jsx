@@ -1,10 +1,10 @@
-import {Button, Checkbox, Form, Input} from "antd";
+import {Button, Flex, Form, Input} from "antd";
 import {useNavigate} from "react-router-dom";
 
 export default function Register() {
     const navigate = useNavigate();
 
-    const onFinish = async (values) => {
+    async function onFinish(values) {
         try {
             const res = await fetch('/auth/register', {
                 method: 'POST',
@@ -23,93 +23,100 @@ export default function Register() {
         } catch (err) {
             console.error('register: ', err)
         }
-    };
+    }
 
     return (
-        <Form
-            name="basic"
-            labelCol={{
-                span: 8,
-            }}
-            wrapperCol={{
-                span: 16,
-            }}
+        <Flex
+            vertical
+            align={'center'}
+            justify={'center'}
+            gap={'large'}
             style={{
-                maxWidth: 600,
+                height: '80vh',
+                backgroundColor: '#f7f7f7',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                borderRadius: 8,
+                width: '70vh',
+                position: 'absolute',
+                left: '60vh',
+                top: '5vh'
             }}
-            initialValues={{
-                remember: true,
-            }}
-            onFinish={onFinish}
-            autoComplete="off"
         >
-            <Form.Item
-                label="Full Name"
-                name="fullname"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your name!',
-                    },
-                ]}
-            >
-                <Input placeholder="enter your name" />
-            </Form.Item>
-            <Form.Item
-                label="Username"
-                name="username"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your username!',
-                    },
-                ]}
-            >
-                <Input placeholder="enter your username" />
-            </Form.Item>
-
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your password!',
-                    },
-                ]}
-            >
-                <Input.Password placeholder="enter your password" />
-            </Form.Item>
-
-            <Form.Item
-                label="Email"
-                name="email"
-            >
-                <Input placeholder="optional" />
-            </Form.Item>
-
-            <Form.Item
-                name="remember"
-                valuePropName="checked"
+            <h1 className={"title"}>Register to a Member</h1>
+            <Form
+                name="basic"
+                labelCol={{
+                    span: 8,
+                }}
                 wrapperCol={{
-                    offset: 8,
                     span: 16,
                 }}
-            >
-                <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <Form.Item
-                wrapperCol={{
-                    offset: 8,
-                    span: 16,
+                style={{
+                    maxWidth: 600,
                 }}
+                initialValues={{
+                    remember: true,
+                }}
+                onFinish={onFinish}
+                autoComplete="off"
             >
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
+                <Form.Item
+                    label="Full Name"
+                    name="fullname"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your name!',
+                        },
+                    ]}
+                >
+                    <Input placeholder="enter your name" />
+                </Form.Item>
+                <Form.Item
+                    label="Username"
+                    name="username"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your username!',
+                        },
+                    ]}
+                >
+                    <Input placeholder="enter your username" />
+                </Form.Item>
+
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your password!',
+                        },
+                    ]}
+                >
+                    <Input.Password placeholder="enter your password" />
+                </Form.Item>
+
+                <Form.Item
+                    label="Email"
+                    name="email"
+                >
+                    <Input placeholder="optional" />
+                </Form.Item>
+
+                <Form.Item
+                    wrapperCol={{
+                        offset: 8,
+                        span: 16,
+                    }}
+                >
+                    <Button block={true} type="default" htmlType="submit">
+                        Register
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Flex>
     )
 }
 
