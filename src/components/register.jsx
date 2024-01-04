@@ -6,19 +6,19 @@ export default function Register() {
 
     async function onFinish(values) {
         try {
-            const res = await fetch('/auth/register', {
+            const res = await fetch('/api/users/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(values),
             });
-            const data = await res.json();
 
             if(res.ok) {
                 navigate('/login')
             } else {
-                console.error('register: ', data.message)
+                const data = await res.json();
+                console.error('register: ', data.error)
             }
         } catch (err) {
             console.error('register: ', err)

@@ -4,11 +4,7 @@ import {Link} from "react-router-dom";
 
 export default function PostCard (props) {
     return (
-        <Card
-            style={{
-                width: 500,
-            }}
-        >
+        <Card>
             <Space direction="vertical">
                 <Space direction="horizontal" align="start">
                     <Link to={`/profile/${'aa'}`}>
@@ -37,4 +33,3 @@ export default function PostCard (props) {
         </Card>
     );
 }
-

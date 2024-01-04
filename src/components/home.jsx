@@ -4,19 +4,14 @@ import NewPost from "./new-post.jsx";
 import Logout from "./logout.jsx";
 import PostCard from "./post.jsx";
 
-export default function Home(props) {
+export default function Home() {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
 
     useEffect(()=>{
         async function fetchPosts() {
-            // '==' is used to check for null or undefined.
-            if (props.userId == null) {
-                return;
-            }
-
             try {
-                const res = await fetch(`/posts/${props.userId}/`, {
+                const res = await fetch(`/api/posts`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -36,7 +31,7 @@ export default function Home(props) {
         }
 
         fetchPosts().then();
-    }, [navigate, props.userId]);
+    }, [navigate]);
 
     let postList;
     const isEmpty = (!posts || posts.length === 0);
@@ -52,7 +47,7 @@ export default function Home(props) {
 
     return (
         <>
-            <NewPost userId={props.userId}/>
+            <NewPost />
             <Logout />
             {postList}
         </>
