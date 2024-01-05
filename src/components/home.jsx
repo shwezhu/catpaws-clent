@@ -23,7 +23,7 @@ export default function Home() {
                 } else if (res.status === 401) {
                     navigate('/login');
                 } else {
-                    console.error('fetch post: ', res.message);
+                    console.error('fetch post: ', data.error);
                 }
             } catch (err) {
                 console.error('fetch post: ', err);

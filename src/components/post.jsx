@@ -3,11 +3,13 @@ import Engagement from "./engagement.jsx";
 import {Link} from "react-router-dom";
 
 export default function PostCard (props) {
+    const {post} = props;
+
     return (
         <Card>
             <Space direction="vertical">
                 <Space direction="horizontal" align="start">
-                    <Link to={`/profile/${'aa'}`}>
+                    <Link to={`/api/users/${post._id}/profile`}>
                         <Avatar
                             size="default"
                             src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1"
@@ -15,7 +17,7 @@ export default function PostCard (props) {
                     </Link>
                     <Flex gap={0} vertical>
                         <b> {props.post.author.fullname} </b>
-                        <Link to={`/profile/${'aa'}`} style={{color: 'gray'}}>
+                        <Link to={`/api/users/${post._id}/profile`} style={{color: 'gray'}}>
                             @{props.post.author.username}
                         </Link>
                         <p>{props.post.text}</p>
@@ -28,7 +30,7 @@ export default function PostCard (props) {
                         </Image.PreviewGroup>
                     </Flex>
                 </Space>
-                <Engagement postId={props.post._id}/>
+                <Engagement postId={post._id} engagement={post.engagement}/>
             </Space>
         </Card>
     );

@@ -22,22 +22,33 @@ function handleMenuClick({ key }) {
 }
 
 export default function Engagement(props) {
-    //const navigate = useNavigate();
-    const [liked, setLiked] = useState(false);
+    /** @namespace engagement.isLiked **/
+    const {postId, engagement} = props;
+    const [liked, setLiked] = useState(!!engagement.isLiked);
 
-    function handleLikeClick() {
-        console.log(props.postId);
-        setLiked(!liked);
+    async function handleLikeClick() {
+        try {
+            const res = await fetch(`/api/posts/${postId}/like`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (res.ok) {
+                setLiked(!liked);
+            } else {
+                const data = await res.json();
+                console.error('like post: ', data.error);
+            }
+        } catch (err) {
+            console.error('like post: ', err);
+        }
     }
 
     return (
         <>
             <Space>
                 <Tooltip title="Like">
-                    <Button
-                        icon={liked ? <HeartFilled /> : <HeartOutlined />}
-                        onClick={handleLikeClick}
-                    />
+                    <Button icon={liked ? <HeartFilled /> : <HeartOutlined />} onClick={handleLikeClick} />
                 </Tooltip>
                 <Tooltip title="Comment">
                     <Button icon={<CommentOutlined />} />
