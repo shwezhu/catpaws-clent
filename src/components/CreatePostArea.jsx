@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-export default function NewPost(props) {
+export default function CreatePostCard(props) {
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
     const [text, setText] = useState('');
@@ -47,24 +47,25 @@ export default function NewPost(props) {
     };
 
     return (
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-            Select files:
-            <input
-                type="file"
-                id="file"
-                name="file"
-                multiple
-                onChange={handleFileChange}
-            /><br /><br />
-            Enter text:
-            <input
-                type="text"
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className={'flex flex-col h-1/4 border-2'} >
+            <textarea
                 id="text"
                 name="text"
                 value={text}
+                placeholder={'Say something...'}
                 onChange={handleTextChange}
-            /><br /><br />
-            <input type="submit" value="Submit" />
+                className={'h-1/2 px-3 py-2 border border-b-2'}
+            />
+
+            <div>
+                <input
+                    type="file"
+                    id="file"
+                    name="file"
+                    onChange={handleFileChange}
+                />
+                <input type="submit" value="Submit"/>
+            </div>
         </form>
     );
 }
