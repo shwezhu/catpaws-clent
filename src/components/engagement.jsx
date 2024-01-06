@@ -48,17 +48,18 @@ export default function Engagement(props) {
         <>
             <Space>
                 <Tooltip title="Like">
-                    <Button icon={liked ? <HeartFilled /> : <HeartOutlined />} onClick={handleLikeClick} />
+                    <Button icon={liked ? <HeartFilled/> : <HeartOutlined/>} onClick={handleLikeClick}/>
                 </Tooltip>
+                <div style={{color: "gray"}} >{engagement.numLikes}</div>
                 <Tooltip title="Comment">
-                    <Button icon={<CommentOutlined />} />
+                    <Button icon={<CommentOutlined/>}/>
                 </Tooltip>
                 <Dropdown
                     placement="bottomRight"
                     menu={menuProps}
                     trigger={['click']}
                 >
-                    <Button icon={<EllipsisOutlined />}/>
+                    <Button icon={<EllipsisOutlined/>}/>
                 </Dropdown>
             </Space>
         </>

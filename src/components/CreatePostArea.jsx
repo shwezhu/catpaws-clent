@@ -1,21 +1,31 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-export default function CreatePostCard(props) {
+export default function CreatePostArea() {
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
     const [text, setText] = useState('');
+    const textareaRef = useRef(null);
 
-    const handleFileChange = (event) => {
-        setFile(event.target.files);
-    };
+    // Auto resize textarea.
+    useEffect(() => {
+        const textarea = textareaRef.current;
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }, [text]);
 
     const handleTextChange = (event) => {
         setText(event.target.value);
     };
+    const handleFileChange = (event) => {
+        setFile(event.target.files);
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!text) {
+            return;
+        }
 
         const formData = new FormData();
         if (file) {
@@ -24,47 +34,45 @@ export default function CreatePostCard(props) {
             }
         }
         formData.append('text', text);
+        // 函数中的异步操作和组件的渲染是两个独立的过程,
+        setText('');
 
         try {
-            const response = await fetch(`/posts/${props.userId}/new`, {
+            const response = await fetch('/api/posts/create', {
                 method: 'POST',
                 body: formData,
             });
 
-            const data = await response.json();
-
             if (response.status === 401) {
                 navigate('/login');
-            } else if (response.status !== 201) {
-                console.error('upload: ', data.message);
-                return;
+            } else if (!response.ok) {
+                const data = await response.json();
+                console.error('upload: ', data.error);
             }
-
-            console.log(data.message);
         } catch (err) {
             console.error('upload: ', err);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} encType="multipart/form-data" className={'flex flex-col h-1/4 border-2'} >
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className={'flex flex-col border-2'} >
             <textarea
-                id="text"
-                name="text"
+                ref={textareaRef}
                 value={text}
-                placeholder={'Say something...'}
                 onChange={handleTextChange}
-                className={'h-1/2 px-3 py-2 border border-b-2'}
+                rows={1}
+                className={'p-3 border border-b-2'}
+                placeholder="What's on your mind?"
             />
-
-            <div>
+            <div className={'border-2'}>
                 <input
                     type="file"
                     id="file"
                     name="file"
+                    multiple
                     onChange={handleFileChange}
                 />
-                <input type="submit" value="Submit"/>
+                <button type="submit"> Post </button>
             </div>
         </form>
     );
