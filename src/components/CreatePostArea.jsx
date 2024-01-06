@@ -1,18 +1,45 @@
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-export default function CreatePostArea() {
-    const navigate = useNavigate();
-    const [file, setFile] = useState(null);
-    const [text, setText] = useState('');
+
+const TextArea = ({ text, handleTextChange }) => {
     const textareaRef = useRef(null);
 
-    // Auto resize textarea.
+    // Auto resize textarea
     useEffect(() => {
         const textarea = textareaRef.current;
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     }, [text]);
+
+    return (
+        <textarea
+            ref={textareaRef}
+            value={text}
+            onChange={handleTextChange}
+            rows={1}
+            className={'p-3 border border-b-2'}
+            placeholder="What's on your mind?"
+        />
+    );
+};
+
+const FileInput = ({ handleFileChange }) => {
+    return (
+        <input
+            type="file"
+            id="file"
+            name="file"
+            multiple
+            onChange={handleFileChange}
+        />
+    );
+};
+
+export default function CreatePostArea() {
+    const navigate = useNavigate();
+    const [file, setFile] = useState(null);
+    const [text, setText] = useState('');
 
     const handleTextChange = (event) => {
         setText(event.target.value);
@@ -56,22 +83,9 @@ export default function CreatePostArea() {
 
     return (
         <form onSubmit={handleSubmit} encType="multipart/form-data" className={'flex flex-col border-2'} >
-            <textarea
-                ref={textareaRef}
-                value={text}
-                onChange={handleTextChange}
-                rows={1}
-                className={'p-3 border border-b-2'}
-                placeholder="What's on your mind?"
-            />
+            <TextArea text={text} handleTextChange={handleTextChange} />
             <div className={'border-2'}>
-                <input
-                    type="file"
-                    id="file"
-                    name="file"
-                    multiple
-                    onChange={handleFileChange}
-                />
+                <FileInput handleFileChange={handleFileChange} />
                 <button type="submit"> Post </button>
             </div>
         </form>
