@@ -1,5 +1,5 @@
 import {Avatar, Card, Flex, Space, Image} from "antd";
-import Engagement from "./engagement.jsx";
+import EngagementArea from "./engagementArea.jsx";
 import {Link} from "react-router-dom";
 
 export default function PostCard (props) {
@@ -30,7 +30,7 @@ export default function PostCard (props) {
                         </Image.PreviewGroup>
                     </Flex>
                 </Space>
-                <Engagement postId={post._id} engagement={post.engagement}/>
+                <EngagementArea postId={post._id} engagement={post.engagement}/>
             </Space>
         </Card>
     );

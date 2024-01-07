@@ -61,7 +61,9 @@ export default function CreatePostArea() {
             }
         }
         formData.append('text', text);
-        // 函数中的异步操作和组件的渲染是两个独立的过程,
+        // 函数中的异步操作和组件的渲染是两个独立的过程
+        // 也就是说 setText('') 会导致组件的重新渲染(导致handleSubmit重新定义)
+        // 但不会影响到fetch函数的异步操作
         setText('');
 
         try {
