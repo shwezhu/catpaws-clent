@@ -12,15 +12,6 @@ const items = [
     },
 ];
 
-const menuProps = {
-    items,
-    onClick: handleMenuClick,
-};
-
-function handleMenuClick({ key }) {
-    message.info(`Click on item ${key}`).then();
-}
-
 export default function EngagementArea(props) {
     /** @namespace engagement.isLiked **/
     const {postId, engagement} = props;
@@ -44,6 +35,33 @@ export default function EngagementArea(props) {
         }
     }
 
+    const menuProps = {
+        items,
+        onClick: handleMenuClick,
+    };
+
+    async function handleMenuClick({ key }) {
+        if (key === '1') {
+
+            try {
+                const res = await fetch(`/api/posts/${postId}/delete`, {
+                    method: 'POST',
+                    credentials: 'include',
+                });
+
+                if (res.ok) {
+                    message.info('Post deleted.');
+                } else {
+                    const data = await res.json();
+                    console.error('like post: ', data.error);
+                }
+            } catch (err) {
+                console.error('like post: ', err);
+            }
+        }
+    }
+
+    /**@namespace engagement.numLikes */
     return (
         <div className={'flex flex-row mt-4 w-full'}>
             <div className={'flex flex-row items-center flex-grow'}>
