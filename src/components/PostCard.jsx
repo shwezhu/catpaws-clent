@@ -1,5 +1,5 @@
 import '../main.css';
-import EngagementArea from "./engagementArea.jsx";
+import EngagementArea from "./EngagementArea.jsx";
 
 export default function PostCard({post}) {
     /** @namespace post._id */
