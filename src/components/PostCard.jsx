@@ -1,7 +1,7 @@
 import '../main.css';
 import EngagementArea from "./EngagementArea.jsx";
 
-export default function PostCard({post}) {
+export default function PostCard({post, onDelete}) {
     /** @namespace post._id */
     /** @namespace post.author.fullname */
     return (
@@ -17,7 +17,7 @@ export default function PostCard({post}) {
                 <p className={'mt-2'}>
                     {post.text}
                 </p>
-                <EngagementArea postId={post._id} engagement={post.engagement}/>
+                <EngagementArea postId={post._id} engagement={post.engagement} onDelete={onDelete}/>
             </div>
         </div>
     );

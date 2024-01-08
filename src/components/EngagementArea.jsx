@@ -1,4 +1,4 @@
-import {Button, Dropdown, message, Tooltip} from "antd";
+import {Button, Dropdown, Tooltip} from "antd";
 import {CommentOutlined, DeleteOutlined, EllipsisOutlined, HeartFilled, HeartOutlined} from "@ant-design/icons";
 import {useState} from "react";
 
@@ -12,9 +12,8 @@ const items = [
     },
 ];
 
-export default function EngagementArea(props) {
+export default function EngagementArea({postId, engagement, onDelete}) {
     /** @namespace engagement.isLiked **/
-    const {postId, engagement} = props;
     const [liked, setLiked] = useState(!!engagement.isLiked);
 
     async function handleLikeClick() {
@@ -42,22 +41,7 @@ export default function EngagementArea(props) {
 
     async function handleMenuClick({ key }) {
         if (key === '1') {
-
-            try {
-                const res = await fetch(`/api/posts/${postId}/delete`, {
-                    method: 'POST',
-                    credentials: 'include',
-                });
-
-                if (res.ok) {
-                    message.info('Post deleted.');
-                } else {
-                    const data = await res.json();
-                    console.error('like post: ', data.error);
-                }
-            } catch (err) {
-                console.error('like post: ', err);
-            }
+            onDelete();
         }
     }
 

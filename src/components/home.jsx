@@ -2,6 +2,7 @@ import CreatePostArea from "./CreatePostArea.jsx";
 import PostCard from "./PostCard.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {message} from "antd";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -32,13 +33,32 @@ export default function Home() {
         fetchPosts().then();
     }, [navigate]);
 
+    async function handleDeletePost(postId) {
+        try {
+            const res = await fetch(`/api/posts/${postId}/delete`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (res.ok) {
+                setPosts(posts.filter(post => post._id !== postId));
+                message.info('Post deleted.');
+            } else {
+                const data = await res.json();
+                console.error('like post: ', data.error);
+            }
+        } catch (err) {
+            console.error('like post: ', err);
+        }
+    }
+
     let postList;
     const isEmpty = (!posts || posts.length === 0);
     if (isEmpty) {
         postList = <h1>No posts found.</h1>
     } else {
         postList = posts.map(post => (
-            <PostCard post={post} key={post._id}/>
+            <PostCard post={post} key={post._id} onDelete={() => handleDeletePost(post._id)}/>
         ));
     }
 
