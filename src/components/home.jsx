@@ -1,5 +1,5 @@
 import CreatePostArea from "./CreatePostArea.jsx";
-import PostCard from "./PostCard.jsx";
+import {SimplePostCard} from "./PostCard.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {message} from "antd";
@@ -58,7 +58,7 @@ export default function Home() {
         postList = <h1>No posts found.</h1>
     } else {
         postList = posts.map(post => (
-            <PostCard post={post} key={post._id} onDelete={() => handleDeletePost(post._id)}/>
+            <SimplePostCard post={post} key={post._id} onDelete={() => handleDeletePost(post._id)}/>
         ));
     }
 
@@ -67,7 +67,7 @@ export default function Home() {
             <div className={'h-full basis-1/4 border-r-2'}>
                 123
             </div>
-            <div className={'h-full basis-2/5 overflow-y-auto'}>
+            <div className={'h-full basis-3/5 overflow-y-auto'}>
                 <CreatePostArea/>
                 <div className={'flex flex-col'}>
                     {postList}

@@ -49,7 +49,7 @@ export default function EngagementArea({postId, engagement, onDelete}) {
 
     /**@namespace engagement.numLikes */
     return (
-        <div className={'flex flex-row mt-4 w-full'}>
+        <div className={'flex flex-row ml-4 mt-4'}>
             <div className={'flex flex-row items-center flex-grow'}>
                 <Tooltip title="Like">
                     <Button icon={liked ? <HeartFilled/> : <HeartOutlined/>} onClick={handleLikeClick}/>

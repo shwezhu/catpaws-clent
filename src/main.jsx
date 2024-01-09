@@ -4,14 +4,16 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Root from "./routes/root";
 import Login from "./components/login.jsx";
 import Register from "./components/register.jsx";
+import Home from "./components/home.jsx";
+import PostDetailPage from "./components/PostDetailPage.jsx";
+import Profile from "./components/profile.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Root />,
+        element: <Home />,
     },
     {
         path: "/login",
@@ -20,7 +22,15 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Register />,
-    }
+    },
+    {
+        path: "/posts/:postId",
+        element: <PostDetailPage />,
+    },
+    {
+        path: "/users/:userId",
+        element: <Profile />,
+    },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
