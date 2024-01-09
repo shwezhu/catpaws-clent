@@ -54,7 +54,7 @@ export default function PostDetailPage() {
 
     return (
         <div className={'flex flex-col'}>
-            <SimplePostCard post={post} onDelete={onDelete}/>
+            <SimplePostCard post={post} onDelete={onDelete} isLinkEnabled={false}/>
             <TextInputArea text={text} handleTextChange={handleTextChange} rows={1} placeholder={"Comment something..."} />
         </div>
     )
