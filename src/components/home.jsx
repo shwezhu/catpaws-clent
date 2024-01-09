@@ -1,4 +1,4 @@
-import CreatePostArea from "./CreatePostArea.jsx";
+import {CreatePostArea} from "./CreatePostArea.jsx";
 import {SimplePostCard} from "./PostCard.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";

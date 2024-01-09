@@ -48,16 +48,18 @@ export default function EngagementArea({postId, engagement, onDelete}) {
     }
 
     /**@namespace engagement.numLikes */
+    /**@namespace engagement.numComments */
     return (
         <div className={'flex flex-row ml-4 mt-4'}>
             <div className={'flex flex-row items-center flex-grow'}>
                 <Tooltip title="Like">
                     <Button icon={liked ? <HeartFilled/> : <HeartOutlined/>} onClick={handleLikeClick}/>
                 </Tooltip>
-                <div className={'ml-1'} style={{color: "gray"}} >{numLikes}</div>
+                <div className={'ml-1'} style={{color: "gray"}}>{numLikes}</div>
                 <Tooltip className={'ml-5'} title="Comment">
                     <Button icon={<CommentOutlined/>}/>
                 </Tooltip>
+                <div className={'ml-1'} style={{color: "gray"}}>{engagement.numComments}</div>
             </div>
             <Dropdown
                 menu={menuProps}

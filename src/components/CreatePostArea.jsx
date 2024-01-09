@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 
-const TextArea = ({ text, handleTextChange }) => {
+const TextInputArea = ({ text, handleTextChange, rows, placeholder }) => {
     const textareaRef = useRef(null);
 
     // Auto resize textarea
@@ -17,9 +17,9 @@ const TextArea = ({ text, handleTextChange }) => {
             ref={textareaRef}
             value={text}
             onChange={handleTextChange}
-            rows={1}
+            rows={rows}
             className={'p-3 border border-b-2'}
-            placeholder="What's on your mind?"
+            placeholder={placeholder}
         />
     );
 };
@@ -36,7 +36,7 @@ const FileInput = ({ handleFileChange }) => {
     );
 };
 
-export default function CreatePostArea() {
+function CreatePostArea() {
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
     const [text, setText] = useState('');
@@ -85,7 +85,7 @@ export default function CreatePostArea() {
 
     return (
         <form onSubmit={handleSubmit} encType="multipart/form-data" className={'flex flex-col border-2'} >
-            <TextArea text={text} handleTextChange={handleTextChange} />
+            <TextInputArea text={text} handleTextChange={handleTextChange} rows={1} placeholder={"What's on your mind?"} />
             <div className={'border-2'}>
                 <FileInput handleFileChange={handleFileChange} />
                 <button type="submit"> Post </button>
@@ -93,3 +93,5 @@ export default function CreatePostArea() {
         </form>
     );
 }
+
+export {CreatePostArea, TextInputArea}
