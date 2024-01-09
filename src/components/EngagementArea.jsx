@@ -15,6 +15,7 @@ const items = [
 export default function EngagementArea({postId, engagement, onDelete}) {
     /** @namespace engagement.isLiked **/
     const [liked, setLiked] = useState(!!engagement.isLiked);
+    const [numLikes, setNumLikes] = useState(engagement.numLikes);
 
     async function handleLikeClick() {
         try {
@@ -25,6 +26,7 @@ export default function EngagementArea({postId, engagement, onDelete}) {
 
             if (res.ok) {
                 setLiked(!liked);
+                setNumLikes(liked ? numLikes - 1 : numLikes + 1);
             } else {
                 const data = await res.json();
                 console.error('like post: ', data.error);
@@ -52,7 +54,7 @@ export default function EngagementArea({postId, engagement, onDelete}) {
                 <Tooltip title="Like">
                     <Button icon={liked ? <HeartFilled/> : <HeartOutlined/>} onClick={handleLikeClick}/>
                 </Tooltip>
-                <div className={'ml-1'} style={{color: "gray"}} >{engagement.numLikes}</div>
+                <div className={'ml-1'} style={{color: "gray"}} >{numLikes}</div>
                 <Tooltip className={'ml-5'} title="Comment">
                     <Button icon={<CommentOutlined/>}/>
                 </Tooltip>
