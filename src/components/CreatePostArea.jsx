@@ -18,7 +18,7 @@ const TextInputArea = ({ text, handleTextChange, rows, placeholder }) => {
             value={text}
             onChange={handleTextChange}
             rows={rows}
-            className={'p-3 border border-b-2'}
+            className={'p-3 flex-grow'}
             placeholder={placeholder}
         />
     );

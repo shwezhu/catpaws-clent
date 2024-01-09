@@ -2,6 +2,8 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {SimplePostCard} from "./PostCard.jsx";
 import {TextInputArea} from "./CreatePostArea.jsx";
+import {Button} from "antd";
+import CommentCard from "./CommentCard.jsx";
 
 export default function PostDetailPage() {
     const { postId } = useParams();
@@ -48,14 +50,52 @@ export default function PostDetailPage() {
         getPost().then();
     }, [postId, navigate])
 
+    async function onComment() {
+        try {
+            const res = await fetch(
+                `/api/posts/${postId}/comment`,
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({content: text}),
+                }
+            );
+
+            if (res.ok) {
+                setText('');
+            } else if (res.status === 401) {
+                navigate('/login');
+            } else {
+                const data = await res.json();
+                console.error('comment post: ', data.error);
+            }
+        } catch (err) {
+            console.error(`comment post: ${postId}: ${err}`);
+        }
+    }
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
+    let commentsList = (<h1 className={'self-center mt-8'}>No comment yet.</h1>);
+    if (post && post.comments.length > 0) {
+        commentsList = post.comments.map((comment) => (
+            <CommentCard key={comment._id} comment={comment} />
+        ));
+    }
+
     return (
         <div className={'flex flex-col'}>
-            <SimplePostCard post={post} onDelete={onDelete} isLinkEnabled={false}/>
-            <TextInputArea text={text} handleTextChange={handleTextChange} rows={1} placeholder={"Comment something..."} />
+            {post && (<SimplePostCard post={post} onDelete={onDelete} isLinkEnabled={false}/>) }
+            <div className={'flex items-center border-2'}>
+                <TextInputArea text={text} handleTextChange={handleTextChange} rows={1} placeholder={"Comment something..."} />
+                <Button className={'ml-3'} onClick={onComment}>Comment</Button>
+            </div>
+            {commentsList}
         </div>
     )
 }
