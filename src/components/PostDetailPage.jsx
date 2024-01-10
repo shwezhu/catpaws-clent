@@ -64,12 +64,20 @@ export default function PostDetailPage() {
                 }
             );
 
+            const data = await res.json();
             if (res.ok) {
                 setText('');
+                setPost(prevPost => ({
+                    ...prevPost,
+                    comments: [data, ...prevPost.comments],
+                    engagement: {
+                        ...prevPost.engagement,
+                        numComments: prevPost.engagement.numComments + 1,
+                    }
+                }));
             } else if (res.status === 401) {
                 navigate('/login');
             } else {
-                const data = await res.json();
                 console.error('comment post: ', data.error);
             }
         } catch (err) {
@@ -77,15 +85,13 @@ export default function PostDetailPage() {
         }
     }
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     let commentsList = (<h1 className={'self-center mt-8'}>No comment yet.</h1>);
     if (post && post.comments.length > 0) {
-        commentsList = post.comments.map((comment) => (
-            <CommentCard key={comment._id} comment={comment} />
-        ));
+        commentsList = post.comments.map((comment) => (<CommentCard key={comment._id} comment={comment} />));
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
 
     return (
